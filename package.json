@@ -12,6 +12,14 @@
     "express": "~4.11.1",
     "jade": "~1.9.1",
     "morgan": "~1.5.1",
-    "serve-favicon": "~2.2.0"
+    "serve-favicon": "~2.2.0",
+    "serve-static": "~1.9.1",
+    "mongoose": "~3.8.24",
+    "passport-local-mongoose": "~1.0.0",
+    "passport": "~0.2.1",
+    "connect-flash": "~0.1.1",
+    "express-session": "~1.10.3",
+    "connect-mongo": "~0.7.0",
+    "passport-local": "~1.0.0"
   }
 }

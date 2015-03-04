@@ -1,7 +1,62 @@
 doctype html
+//
+	* Copyright (C) 2015 Aldo Ambrosioni
+	* ambrosioni.ict@gmail.com
+	* 
+	* This file is part of the p2peers project
 html
-  head
-    title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
-  body
-    block content
+	head
+		meta(charset='utf-8')
+		meta(http-equiv='X-UA-Compatible', content='IE=edge')
+		meta(name='viewport', content='width=device-width, initial-scale=1')
+
+		if (title)
+			title #{title} - p2peers
+		else
+			title p2peers
+
+		// Bootstrap 
+		link(rel='stylesheet', href='/bootstrap/css/bootstrap.min.css')
+		// Custom CSS 
+		link(rel='stylesheet', href='/stylesheets/style.css')
+	body
+		// Top navigation bar
+		nav.navbar.navbar-fixed-top(role='navigation')
+			.container-fluid
+				.navbar-header
+					button.navbar-toggle.collapsed(type='button' data-toggle='collapse' data-target='#navbar' aria-expanded='false' aria-controls='navbar')
+						span.sr-only Toggle navigation
+						span.icon-bar
+						span.icon-bar
+						span.icon-bar
+					a.navbar-brand(href='/') p2peers
+				#navbar.navbar-collapse.collapse
+					if (user)
+						ul.nav.navbar-nav
+							li
+								a(href='/control') Control
+							li
+								a(href='/notifier') Notifier
+							li
+								a(href='/deskwait') Desk
+					ul.nav.navbar-nav.navbar-right
+						if (!user)
+							li
+								a(href='/login') Login
+						if (user)
+							li.dropdown
+								a.dropdown-toggle(href='#' data-toggle='dropdown' role='button' aria-expanded='false') #{user.name} #{user.surname} (#{user.username})
+									ul.dropdown-menu(role='menu')
+										li
+											a(href='/logout') Logout
+
+		// Page content
+		block content
+
+		// jQuery 
+		script(type='text/javascript' src='/javascripts/lib/jquery-2.1.1.min.js')
+		// Bootstrap 
+		script(type='text/javascript' src='/bootstrap/js/bootstrap.min.js')
+
+		// Page specific scripts
+		block bottomscripts
