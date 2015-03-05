@@ -13,6 +13,7 @@ var mongoose = require('mongoose'),
 
 var UserSchema = new mongoose.Schema({
 	username: { type: String, index: { unique: true } },
+	email:		String,
 	password: String,
 	name:			String,
 	surname:	String
@@ -20,4 +21,4 @@ var UserSchema = new mongoose.Schema({
 
 UserSchema.plugin(passportLocalMongoose);
 
-mongoose.model('User', UserSchema);
+module.exports = mongoose.model('User', UserSchema);

@@ -26,7 +26,7 @@ var env = process.env.NODE_ENV || 'local';
 var config = require('./config')(env);
 
 var mongoose = require('mongoose');
-require('./models/Users');
+var User = require('./models/Users');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -59,6 +59,12 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
+
+// passport config
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 // Static files (CSS, JS, etc...)
 app.use(serveStatic('./public', {index: false}));
 // Main routes
