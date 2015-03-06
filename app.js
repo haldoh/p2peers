@@ -22,14 +22,18 @@ var MongoStore = require('connect-mongo')(session);
 var flash = require('connect-flash');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
+// environment
 var env = process.env.NODE_ENV || 'local';
 var config = require('./config')(env);
-
+// mongodb and mongoose
 var mongoose = require('mongoose');
 var User = require('./models/Users');
-
+var Chat = require('./models/Chats');
+var Messages = require('./models/Messages');
+// routes
 var routes = require('./routes/index');
 var users = require('./routes/users');
+var chats = require('./routes/chats');
 
 var app = express();
 
@@ -71,6 +75,8 @@ app.use(serveStatic('./public', {index: false}));
 app.use('/', routes);
 // Users routes
 app.use('/users', users);
+// Chats routes
+app.use('/chats', chats);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -103,6 +109,13 @@ app.use(function (err, req, res, next) {
 	});
 });
 
+// http server
+var http = require('http').Server(app);
+
+// socket.io
+var io = require('./lib/sockets').listen(http);
+
+// MongoDB
 mongoose.connect('mongodb://' + config.mongo.host + ':' + config.mongo.port + '/' + config.mongo.name);
 
 module.exports = app;

@@ -1,0 +1,19 @@
+extends layout
+
+block content
+
+	.container
+		form.form-horizontal(role='form', action="/chats/newchat", method="post")
+			if (message && message.length)
+				.alert.alert-danger(role='alert')
+				span.glyphicon.glyphicon-exclamation-sign(aria-hidden='true')
+				span.sr-only Error:
+				|  #{message}
+			.form-group
+				label.col-sm-2.control-label(for='name') Chat name
+				.col-sm-10
+					input.form-control(type='text', name="name", id="name", placeholder='name')
+			p.text-center
+				button.btn.btn-default.add-btn(type='submit') Create
+				a(href='/')
+				button.btn.btn-default.add-btn(type="button") Cancel
