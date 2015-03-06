@@ -37,21 +37,26 @@ router.get('/signup', routeFunct.isNotLoggedIn, function (req, res, next) {
 
 /* POST sign up */
 router.post('/signup', routeFunct.isNotLoggedIn, routeFunct.checkUser, routeFunct.checkEmail, routeFunct.passwordValidity, function (req, res, next) {
-	// New account
-	User.register(new User({
-		username:	req.body.username,
-		email:		req.body.email,
-		name:			req.body.name,
-		surname:	req.body.surname
-	}), req.body.password, function (err, account) {
-		if (err) {
-			// Return to sign up page if there is an error
-			res.redirect('/signup');
-		} else {
-			// If everything's ok, return to home page
-			res.redirect('/');
-		}
-	});
+	// Check if we need a redirect
+	if (req.p2pRedir) {
+		res.redirect('/signup');
+	} else {
+		// New account
+		User.register(new User({
+			username:	req.body.username,
+			email:		req.body.email,
+			name:			req.body.name,
+			surname:	req.body.surname
+		}), req.body.password, function (err, account) {
+			if (err) {
+				// Return to sign up page if there is an error
+				res.redirect('/signup');
+			} else {
+				// If everything's ok, return to home page
+				res.redirect('/');
+			}
+		});
+	}
 });
 
 // Logout action
