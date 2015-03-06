@@ -38,7 +38,7 @@ router.get('/signup', routeFunct.isNotLoggedIn, function (req, res, next) {
 /* POST sign up */
 router.post('/signup', routeFunct.isNotLoggedIn, routeFunct.checkUser, routeFunct.checkEmail, routeFunct.passwordValidity, function (req, res, next) {
 	// Check if we need a redirect
-	if (req.p2pRedir) {
+	if (req.p2pSignupRedir) {
 		res.redirect('/signup');
 	} else {
 		// New account

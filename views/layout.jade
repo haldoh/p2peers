@@ -34,11 +34,11 @@ html
 					if (user)
 						ul.nav.navbar-nav
 							li
-								a(href='/control') Control
+								a(href='/placeholder') placeholder1
 							li
-								a(href='/notifier') Notifier
+								a(href='/placeholder') placeholder2
 							li
-								a(href='/deskwait') Desk
+								a(href='/placeholder') placeholder3
 					ul.nav.navbar-nav.navbar-right
 						if (!user)
 							li
@@ -49,6 +49,8 @@ html
 							li.dropdown
 								a.dropdown-toggle(href='#' data-toggle='dropdown' role='button' aria-expanded='false') #{user.name} #{user.surname} (#{user.username})
 									ul.dropdown-menu(role='menu')
+										li
+											a(href='/users/#{user.username}') Profile
 										li
 											a(href='/logout') Logout
 
