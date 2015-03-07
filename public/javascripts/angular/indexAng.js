@@ -52,6 +52,7 @@ app.factory('chats', [
 				angular.copy(data, o.chats);
 			});
 		};
+		return o;
 	}
 ]);
 
