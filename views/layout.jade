@@ -15,11 +15,15 @@ html
 		else
 			title p2peers
 
+		// AngularJS
+		script(type='text/javascript' src='/javascripts/lib/angular/angular.min.js')
+		// AngularJS ui router
+		script(type='text/javascript' src='/javascripts/lib/angular-ui-router.min.js')
 		// Bootstrap 
 		link(rel='stylesheet', href='/bootstrap/css/bootstrap.min.css')
 		// Custom CSS 
 		link(rel='stylesheet', href='/stylesheets/style.css')
-	body
+	body(ng-app="p2peers")
 		// Top navigation bar
 		nav.navbar.navbar-fixed-top(role='navigation')
 			.container-fluid
@@ -61,8 +65,6 @@ html
 		script(type='text/javascript' src='/javascripts/lib/jquery-2.1.1.min.js')
 		// Bootstrap 
 		script(type='text/javascript' src='/bootstrap/js/bootstrap.min.js')
-		// AngularJS
-		script(type='text/javascript' src='/javascripts/lib/angular/angular.min.js')
 
 		// Page specific scripts
 		block bottomscripts

@@ -5,3 +5,22 @@ block content
 		.starter-template
 			h1 p2peers
 			p.lead A web-based, WebRTC-powered chat.
+			
+			if (!user)
+				p
+					a(href="\login")
+						button.btn.btn-primary Login
+				p
+					a(href="\signup")
+						button.btn.btn-primary Signup
+			
+			if (user)
+				div(ui-view)
+				
+			script(type="text/ng-template" id="/home.html")
+				div(ng-repeat="chat in chats") Test
+						
+
+block bottomscripts
+	// Page-specific angularjs
+	script(type='text/javascript' src='/javascripts/angular/indexAng.js')

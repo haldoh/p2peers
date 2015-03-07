@@ -21,7 +21,7 @@ var router = express.Router();
 router.get('/', routeFunct.isLoggedIn, function (req, res, next) {
   req.user.populate('chats', function (err, user) {
 		if (err) { return next(err); }
-		res.json(user);
+		res.json(user.chats);
 	});
 });
 

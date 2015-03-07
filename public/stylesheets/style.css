@@ -17,6 +17,19 @@ a:hover {
 	color: #000;
 }
 
+.starter-template > p > a > .btn-primary {
+	color: #fcbf62;
+	background-color: #f5f5f5;
+	border-color: #000;
+	font-size: large;
+	font-weight: bold;
+	width: 250px;
+	height: 45px;
+}
+
+.starter-template > p > a > .btn-primary:hover {
+	color: #000;
+}
 /*
  * Top navigation
  * Hide default border to remove 1px line.
