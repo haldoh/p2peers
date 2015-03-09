@@ -2,42 +2,43 @@ extends layout
 
 block content
 
-	h2.text-center #{title}
-	br
-	form.form-horizontal(role='form', action="/signup", method="post")
-		if (errors && errors.length)
-			each error in errors
-				.alert.alert-danger(role='alert')
-					span.glyphicon.glyphicon-exclamation-sign(aria-hidden='true')
-					span.sr-only Error:
-					|  #{error}
-		.form-group
-			label.col-sm-2.control-label(for='name') Username
-			.col-sm-10
-				input.form-control(type='text', name="username", id="username", placeholder='Username')
-		.form-group
-			label.col-sm-2.control-label(for='password') Password
-			.col-sm-10
-				input.form-control(type='password', name="password", id="password", placeholder='Password')
-			label.col-sm-2.control-label(for='passConfirm')
-			.col-sm-10
-				input.form-control(type='password', name="passConfirm", id="passConfirm", placeholder='Password confirmation')
-		.form-group
-			label.col-sm-2.control-label(for='email') Email address
-			.col-sm-10
-				input.form-control(type='text', name="email", id="email", placeholder='Email address')
-			label.col-sm-2.control-label(for='emailConfirm')
-			.col-sm-10
-				input.form-control(type='text', name="emailConfirm", id="emailConfirm", placeholder='Email address confirmation')
-		.form-group
-			label.col-sm-2.control-label(for='name') Name
-			.col-sm-10
-				input.form-control(type='text', name="name", id="name", placeholder='Name')
-		.form-group
-			label.col-sm-2.control-label(for='surname') Surname
-			.col-sm-10
-				input.form-control(type='text', name="surname", id="surname", placeholder='Surname')
-		p.text-center
-			button.btn.btn-info.add-btn(type='submit') Sign up
-			a(href='/')
-				button.btn.btn-default.add-btn(type="button") Cancel
+	.container
+		h2.text-center #{title}
+		br
+		form.form-horizontal(role='form', action="/signup", method="post")
+			if (errors && errors.length)
+				each error in errors
+					.alert.alert-danger(role='alert')
+						span.glyphicon.glyphicon-exclamation-sign(aria-hidden='true')
+						span.sr-only Error:
+						|  #{error}
+			.form-group
+				label.col-sm-2.control-label(for='name') Username
+				.col-sm-10
+					input.form-control(type='text', name="username", id="username", placeholder='Username')
+			.form-group
+				label.col-sm-2.control-label(for='password') Password
+				.col-sm-10
+					input.form-control(type='password', name="password", id="password", placeholder='Password')
+				label.col-sm-2.control-label(for='passConfirm')
+				.col-sm-10
+					input.form-control(type='password', name="passConfirm", id="passConfirm", placeholder='Password confirmation')
+			.form-group
+				label.col-sm-2.control-label(for='email') Email address
+				.col-sm-10
+					input.form-control(type='text', name="email", id="email", placeholder='Email address')
+				label.col-sm-2.control-label(for='emailConfirm')
+				.col-sm-10
+					input.form-control(type='text', name="emailConfirm", id="emailConfirm", placeholder='Email address confirmation')
+			.form-group
+				label.col-sm-2.control-label(for='name') Name
+				.col-sm-10
+					input.form-control(type='text', name="name", id="name", placeholder='Name')
+			.form-group
+				label.col-sm-2.control-label(for='surname') Surname
+				.col-sm-10
+					input.form-control(type='text', name="surname", id="surname", placeholder='Surname')
+			p.text-center
+				button.btn.btn-info.add-btn(type='submit') Sign up
+				a(href='/')
+					button.btn.btn-default.add-btn(type="button") Cancel

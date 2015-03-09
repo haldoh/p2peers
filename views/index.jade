@@ -9,10 +9,10 @@ block content
 				p.lead A web-based, WebRTC-powered chat.
 				p
 					a(href="\login")
-						button.btn.btn-primary Login
+						button.btn.btn-primary.btn-main Login
 				p
 					a(href="\signup")
-						button.btn.btn-primary Signup
+						button.btn.btn-primary.btn-main Signup
 
 		if (user)
 			div(ui-view)
@@ -20,30 +20,42 @@ block content
 		// home.html - chat list
 		script(type="text/ng-template" id="/home.html")
 			.row
+				.col-md-12.form-newchat
+					button.btn.btn-primary(ng-hide="chatForm", ng-click="showForm()") New Chat
+					form.form-inline(ng-show="chatForm", ng-submit="newChat()")
+						.form-group
+							label.sr-only(for="name") New chat name
+							input.form-control(type="text", name="name", id="name", ng-model="name", placeholder="New chat name")
+						button.btn.btn-primary(type="submit") Create
+						button.btn.btn-primary(ng-show="chatForm", ng-click="hideForm()") Hide form
+			.row
 				.col-md-12
 					div(ng-repeat="chat in chats")
 						p
-							a(href="#/chats/{{ chat._id }}") {{ chat.name }} - {{ chat.chatmessages.length }} messages
-			.row
-				.col-md-12
-					form(ng-submit="newChat()")
-						input.form-control(type="text", name="name", id="name", ng-model="name", placeholder="New chat name")
-						button.btn.btn.primary(type="submit") Create
+							a(href="#!/chats/{{ chat._id }}")
+								h3 {{ chat.name }}
+							|{{ chat.chatmessages.length }} messages - last message: -time here-
 						
 		// chat.html - single chat page
 		script(type="text/ng-template" id="/chat.html")
 			.row
-				p.lead {{ chat.name }}
-			.row
-				div(ng-repeat="chatmessage in chat.chatmessages")
-					p {{ chatmessage.body }}
+				.col-md-12
+					p.lead {{ chat.name }}
 			.row
 				.col-md-12
-					form(ng-submit="sendMessage()")
-						input.form-control(type="text", name="body", id="body", ng-model="body", placeholder="Write here...")
+					.msg-cont(ng-repeat="chatmessage in chat.chatmessages")
+						p {{ chatmessage.body }}
+			.row
+				.col-md-12
+					form.form-inline(ng-submit="sendMessage()")
+						.form-group
+							label.sr-only(for="body") Message
+							input.form-control(type="text", name="body", id="body", ng-model="body", placeholder="Write here...")
 						button.btn.btn.primary(type="submit") Send
 			
 
 block bottomscripts
 	// Page-specific angularjs
-	script(type='text/javascript' src='/javascripts/angular/indexAng.js')
+	script(type='text/javascript' src='/javascripts/angular/MainApp/app.js')
+	script(type='text/javascript' src='/javascripts/angular/MainApp/controllers.js')
+	script(type='text/javascript' src='/javascripts/angular/MainApp/services.js')

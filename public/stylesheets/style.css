@@ -17,18 +17,28 @@ a:hover {
 	color: #000;
 }
 
+.btn {
+	cursor: default;
+}
+
 .btn-primary {
 	color: #fcbf62;
 	background-color: #f5f5f5;
 	border-color: #000;
-	font-size: large;
-	font-weight: bold;
-	width: 250px;
-	height: 45px;
+	cursor: default;
 }
 
 .btn-primary:hover {
 	color: #000;
+	background-color: #f5f5f5;
+	border-color: #000;
+}
+
+.btn-main {
+	font-size: large;
+	font-weight: bold;
+	width: 250px;
+	height: 45px;
 }
 /*
  * Top navigation
@@ -37,4 +47,9 @@ a:hover {
 .navbar-fixed-top {
   border: 0;
 	background-color: #f5f5f5;
+}
+
+/* Forms */
+.form-newchat {
+	padding: 5px;
 }
