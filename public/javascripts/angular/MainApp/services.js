@@ -23,9 +23,15 @@ angular.module('p2peers').factory('chats', [
 				angular.copy(data, o.chats);
 			});
 		};
-		// Method to retrieve a single chat
-		o.get = function (id) {
-			return $http.get('/chats/' + id).then(function (res) {
+		// Method to retrieve a single chat's messages
+		o.getMsgs = function (id) {
+			return $http.get('/chats/' + id + '/msgs').then(function (res) {
+				return res.data;
+			});
+		};
+		// Method to retrieve a single chat's users
+		o.getUsers = function (id) {
+			return $http.get('/chats/' + id + '/users').then(function (res) {
 				return res.data;
 			});
 		};

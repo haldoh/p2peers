@@ -76,9 +76,17 @@ router.post('/:chat/newmessage', routeFunct.isLoggedIn, function (req, res, next
 	});
 });
 
-/* GET a single chat */
-router.get('/:chat', routeFunct.isLoggedIn, function (req, res, next) {
+/* GET a single chat's messages */
+router.get('/:chat/msgs', routeFunct.isLoggedIn, function (req, res, next) {
 	req.chat.populate('chatmessages', function (err, chat) {
+		if (err) { return next(err); }
+		res.json(chat);
+	});
+});
+
+/* GET a single chat's users */
+router.get('/:chat/users', routeFunct.isLoggedIn, function (req, res, next) {
+	req.chat.populate('users', 'id username name surname', function (err, chat) {
 		if (err) { return next(err); }
 		res.json(chat);
 	});

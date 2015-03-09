@@ -44,7 +44,7 @@ block content
 			.row
 				.col-md-12
 					.msg-cont(ng-repeat="chatmessage in chat.chatmessages")
-						p {{ chatmessage.time }} - {{ chatmessage.body }}
+						p {{ users[chatmessage.user].name }} {{users[chatmessage.user].surname}} ({{ users[chatmessage.user].username }}) - [{{ chatmessage.time }}]: {{ chatmessage.body }}
 			.row
 				.col-md-12
 					form.form-inline(ng-submit="sendMessage()")

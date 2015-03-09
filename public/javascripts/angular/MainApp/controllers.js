@@ -43,9 +43,17 @@ angular.module('p2peers').controller('ChatCtrl', [
 	'$scope',
 	'chats',
 	'chat',
-	function ($scope, chats, chat) {
-		$scope.actionUrl = "/chats/" + chat._id + "/newmessage";
+	'users',
+	function ($scope, chats, chat, users) {
 		$scope.chat = chat;
+		$scope.users = [];
+		users.users.forEach(function (user) {
+			$scope.users[user._id] = {
+				name: user.name,
+				surname: user.surname,
+				username: user.username
+			};
+		});
 		// Send a new message
 		$scope.sendMessage = function () {
 			// Send only non-empty messages

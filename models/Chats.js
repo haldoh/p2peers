@@ -8,7 +8,8 @@
 /*jslint node: true*/
 "use strict";
 
-var mongoose = require('mongoose');
+var mongoose = require('mongoose'),
+	deepPopulate = require('mongoose-deep-populate');
 
 var ChatSchema = new mongoose.Schema({
 	name: String,
@@ -17,5 +18,7 @@ var ChatSchema = new mongoose.Schema({
 	users: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
 	chatmessages: [{ type: mongoose.Schema.Types.ObjectId, ref: 'ChatMessage' }]
 });
+
+ChatSchema.plugin(deepPopulate);
 
 module.exports = mongoose.model('Chat', ChatSchema);

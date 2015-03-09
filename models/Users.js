@@ -9,7 +9,8 @@
 "use strict";
 
 var mongoose = require('mongoose'),
-	passportLocalMongoose = require('passport-local-mongoose');
+	passportLocalMongoose = require('passport-local-mongoose'),
+	deepPopulate = require('mongoose-deep-populate');
 
 var UserSchema = new mongoose.Schema({
 	username: { type: String, index: { unique: true } },
@@ -22,5 +23,6 @@ var UserSchema = new mongoose.Schema({
 });
 
 UserSchema.plugin(passportLocalMongoose);
+UserSchema.plugin(deepPopulate);
 
 module.exports = mongoose.model('User', UserSchema);

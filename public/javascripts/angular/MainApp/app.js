@@ -46,7 +46,10 @@ app.config([
 				controller: 'ChatCtrl',
 				resolve: {
 					chat: ['$stateParams', 'chats', function ($stateParams, chats) {
-						return chats.get($stateParams.id);
+						return chats.getMsgs($stateParams.id);
+					}],
+					users: ['$stateParams', 'chats', function ($stateParams, chats) {
+						return chats.getUsers($stateParams.id);
 					}]
 				}
 			});
