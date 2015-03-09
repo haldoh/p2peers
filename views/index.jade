@@ -2,24 +2,47 @@ extends layout
 
 block content
 	.container
-		.starter-template
-			h1 p2peers
-			p.lead A web-based, WebRTC-powered chat.
-			
-			if (!user)
+						
+		if (!user)
+			.starter-template
+				h1 p2peers
+				p.lead A web-based, WebRTC-powered chat.
 				p
 					a(href="\login")
 						button.btn.btn-primary Login
 				p
 					a(href="\signup")
 						button.btn.btn-primary Signup
-			
-			if (user)
-				div(ui-view)
-				
-			script(type="text/ng-template" id="/home.html")
-				div(ng-repeat="chat in chats") {{ chat }}
+
+		if (user)
+			div(ui-view)
+
+		// home.html - chat list
+		script(type="text/ng-template" id="/home.html")
+			.row
+				.col-md-12
+					div(ng-repeat="chat in chats")
+						p
+							a(href="#/chats/{{ chat._id }}") {{ chat.name }} - {{ chat.chatmessages.length }} messages
+			.row
+				.col-md-12
+					form(ng-submit="newChat()")
+						input.form-control(type="text", name="name", id="name", ng-model="name", placeholder="New chat name")
+						button.btn.btn.primary(type="submit") Create
 						
+		// chat.html - single chat page
+		script(type="text/ng-template" id="/chat.html")
+			.row
+				p.lead {{ chat.name }}
+			.row
+				div(ng-repeat="chatmessage in chat.chatmessages")
+					p {{ chatmessage.body }}
+			.row
+				.col-md-12
+					form(ng-submit="sendMessage()")
+						input.form-control(type="text", name="body", id="body", ng-model="body", placeholder="Write here...")
+						button.btn.btn.primary(type="submit") Send
+			
 
 block bottomscripts
 	// Page-specific angularjs

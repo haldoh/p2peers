@@ -12,14 +12,14 @@ var passport = require('passport');
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
 var Chat = mongoose.model('Chat');
-var Message = mongoose.model('Message');
+var ChatMessage = mongoose.model('ChatMessage');
 var routeFunct = require('./routeFunctions');
 var express = require('express');
 var router = express.Router();
 
 /* GET all chats of the user */
 router.get('/', routeFunct.isLoggedIn, function (req, res, next) {
-  req.user.populate('chats', function (err, user) {
+	req.user.populate('chats', function (err, user) {
 		if (err) { return next(err); }
 		res.json(user.chats);
 	});
@@ -46,16 +46,14 @@ router.post('/newchat', routeFunct.isLoggedIn, function (req, res, next) {
 		req.user.save(function (err, user) {
 			if (err) { return next(err); }
 			res.json(newChat);
-			// TODO should not be needed
-			res.redirect('/');
 		});
 	});
 });
 
 /* POST new message */
-router.post('/:chat/newmessage', routeFunct.isLoggedIn, function (res, req, next) {
+router.post('/:chat/newmessage', routeFunct.isLoggedIn, function (req, res, next) {
 	// Build a new message
-	var newMsg = new Message(req.body);
+	var newMsg = new ChatMessage(req.body);
 	// User is the owner of the message
 	newMsg.user = req.user;
 	// The chat in the url is the message's chat
@@ -64,27 +62,32 @@ router.post('/:chat/newmessage', routeFunct.isLoggedIn, function (res, req, next
 	newMsg.save(function (err, msg) {
 		if (err) { return next(err); }
 		// Save reference in user
-		req.user.messages.push(newMsg);
+		req.user.chatmessages.push(newMsg);
 		req.user.save(function (err, user) {
 			if (err) { return next(err); }
 			// Save reference in chat
-			req.chat.messages.push(newMsg);
+			req.chat.chatmessages.push(newMsg);
 			req.chat.save(function (err, chat) {
 				if (err) { return next(err); }
 				res.json(newMsg);
-				// TODO should not be needed
-				res.redirect('/');
 			});
 		});
+	});
+});
+
+/* GET a single chat */
+router.get('/:chat', routeFunct.isLoggedIn, function (req, res, next) {
+	req.chat.populate('chatmessages', function (err, chat) {
+		if (err) { return next(err); }
+		res.json(chat);
 	});
 });
 
 /* PARAM chat id */
 router.param('chat', function (req, res, next, id) {
 	// Find chat by id
-	var query = User.findById(id);
-	query.exec(function (err, chat) {
-		// If there are no errors, save it in req.user and continue
+	Chat.findById(id, function (err, chat) {
+		// If there are no errors, save it in req.chat and continue
 		if (err) { return next(err); }
 		if (!chat) { return next(new Error('can\'t find chat')); }
 		req.chat = chat;

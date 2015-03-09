@@ -18,7 +18,7 @@ var UserSchema = new mongoose.Schema({
 	name:			String,
 	surname:	String,
 	chats:		[{ type: mongoose.Schema.Types.ObjectId, ref: 'Chat' }],
-	messages:	[{ type: mongoose.Schema.Types.ObjectId, ref: 'Message' }]
+	chatmessages:	[{ type: mongoose.Schema.Types.ObjectId, ref: 'ChatMessage' }]
 });
 
 UserSchema.plugin(passportLocalMongoose);

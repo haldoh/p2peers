@@ -29,7 +29,7 @@ var config = require('./config')(env);
 var mongoose = require('mongoose');
 var User = require('./models/Users');
 var Chat = require('./models/Chats');
-var Messages = require('./models/Messages');
+var ChatMessage = require('./models/ChatMessages');
 // routes
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -47,9 +47,9 @@ app.locals.pretty = true;
 
 app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
+app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieParser());
 app.use(session({
 	secret: "Power of the dragonflame",
 	resave: false,
