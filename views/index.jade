@@ -30,11 +30,11 @@ block content
 						button.btn.btn-primary(ng-show="chatForm", ng-click="hideForm()") Hide form
 			.row
 				.col-md-12
-					div(ng-repeat="chat in chats")
+					div(ng-repeat="chat in chats | orderBy:'-updated'")
 						p
 							a(href="#!/chats/{{ chat._id }}")
 								h3 {{ chat.name }}
-							|{{ chat.chatmessages.length }} messages - last message: -time here-
+							|{{ chat.chatmessages.length }} messages - last message: {{ chat.updated }}
 						
 		// chat.html - single chat page
 		script(type="text/ng-template" id="/chat.html")
@@ -44,7 +44,7 @@ block content
 			.row
 				.col-md-12
 					.msg-cont(ng-repeat="chatmessage in chat.chatmessages")
-						p {{ chatmessage.body }}
+						p {{ chatmessage.time }} - {{ chatmessage.body }}
 			.row
 				.col-md-12
 					form.form-inline(ng-submit="sendMessage()")

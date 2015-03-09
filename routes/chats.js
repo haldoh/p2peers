@@ -67,6 +67,7 @@ router.post('/:chat/newmessage', routeFunct.isLoggedIn, function (req, res, next
 			if (err) { return next(err); }
 			// Save reference in chat
 			req.chat.chatmessages.push(newMsg);
+			req.chat.updated = newMsg.time;
 			req.chat.save(function (err, chat) {
 				if (err) { return next(err); }
 				res.json(newMsg);
