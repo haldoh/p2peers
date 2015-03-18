@@ -17,7 +17,15 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-  res.render('index', { user: req.user });
+	// Build a custom version of user for angularjs services
+	var jsonUser = null;
+	if (req.user) {
+		jsonUser = {};
+		jsonUser.name = req.user.name;
+		jsonUser.surname = req.user.surname;
+		jsonUser.username = req.user.username;
+	}
+  res.render('index', { jsonUser: JSON.stringify(jsonUser), user: req.user });
 });
 
 /* GET login page */

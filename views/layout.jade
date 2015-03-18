@@ -19,6 +19,7 @@ html
 		script(type='text/javascript' src='/javascripts/lib/angular/angular.min.js')
 		// AngularJS ui router
 		script(type='text/javascript' src='/javascripts/lib/angular-ui-router.min.js')
+		
 		// Bootstrap 
 		link(rel='stylesheet', href='/bootstrap/css/bootstrap.min.css')
 		// Custom CSS 
@@ -65,6 +66,16 @@ html
 		script(type='text/javascript' src='/javascripts/lib/jquery-2.1.1.min.js')
 		// Bootstrap 
 		script(type='text/javascript' src='/bootstrap/js/bootstrap.min.js')
-
+		// Get user data
+		script(type='text/javascript').
+			window.user = !{user ? user : 'null'};
+		
+		// angularjs app
+		script(type='text/javascript' src='/javascripts/angular/MainApp/services.js')
+		
+		script(type='text/javascript' src='/javascripts/angular/MainApp/app.js')
+		
+		script(type='text/javascript' src='/javascripts/angular/MainApp/controllers.js')
+		
 		// Page specific scripts
 		block bottomscripts

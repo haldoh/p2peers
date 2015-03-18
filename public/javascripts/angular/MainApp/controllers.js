@@ -13,8 +13,15 @@
 // Main controller for chats list
 angular.module('p2peers').controller('MainCtrl', [
 	'$scope',
+	'authentication',
 	'chats',
-	function ($scope, chats) {
+	function ($scope, authentication, chats) {
+		// User data
+		if (authentication.user !== null) {
+			$scope.username = authentication.username;
+			$scope.name = authentication.name;
+			$scope.surname = authentication.surname;
+		}
 		/* Hide/show new chat form */
 		$scope.chatForm = false;
 		$scope.showForm = function () {

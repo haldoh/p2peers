@@ -12,12 +12,15 @@
 
 // App name and initialization
 var mainAppModuleName = 'p2peers';
-var app = angular.module(mainAppModuleName, ['ui.router']);
+var app = angular.module(mainAppModuleName, ['ui.router', 'users', 'chats']);
 
 // Hashbangs
 app.config(['$locationProvider', function ($locationProvider) {
 	$locationProvider.hashPrefix('!');
 }]);
+
+// Fix for Facebook redirect bug (useful?)
+if (window.location.has === '#_=_') { window.location.hash = '#!'; }
 
 // Manual bootstrapping
 angular.element(document).ready(function () {

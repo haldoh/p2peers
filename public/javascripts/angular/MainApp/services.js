@@ -10,8 +10,19 @@
 /*global angular*/
 "use strict";
 
+// User management service
+angular.module('users', []).factory('authentication', [
+	function () {
+		this.user = window.user;
+		
+		return {
+			user: this.user
+		};
+	}
+]);
+
 // Chats service
-angular.module('p2peers').factory('chats', [
+angular.module('chats', []).factory('chats', [
 	'$http',
 	function ($http) {
 		var o = {
