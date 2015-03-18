@@ -28,49 +28,4 @@ router.get('/', function (req, res, next) {
   res.render('index', { jsonUser: JSON.stringify(jsonUser), user: req.user });
 });
 
-/* GET login page */
-router.get('/login', routeFunct.isNotLoggedIn, function (req, res, next) {
-	res.render('login', { title: 'login', message: req.flash('error') });
-});
-
-/* POST try to login */
-router.post('/login', routeFunct.isNotLoggedIn, passport.authenticate('local', { successRedirect: '/',
-																										failureRedirect: '/login',
-																										failureFlash: 'Invalid credentials.' }), function (req, res) {});
-
-/* GET signup page */
-router.get('/signup', routeFunct.isNotLoggedIn, function (req, res, next) {
-	res.render('signup', { title: 'Sign up', errors: req.flash('error') });
-});
-
-/* POST sign up */
-router.post('/signup', routeFunct.isNotLoggedIn, routeFunct.checkUser, routeFunct.checkEmail, routeFunct.passwordValidity, function (req, res, next) {
-	// Check if we need a redirect
-	if (req.p2pSignupRedir) {
-		res.redirect('/signup');
-	} else {
-		// New account
-		User.register(new User({
-			username:	req.body.username,
-			email:		req.body.email,
-			name:			req.body.name,
-			surname:	req.body.surname
-		}), req.body.password, function (err, account) {
-			if (err) {
-				// Return to sign up page if there is an error
-				res.redirect('/signup');
-			} else {
-				// If everything's ok, return to home page
-				res.redirect('/');
-			}
-		});
-	}
-});
-
-// Logout action
-router.get('/logout', routeFunct.isLoggedIn, function (req, res) {
-	req.logout();
-	res.redirect('/');
-});
-
 module.exports = router;
