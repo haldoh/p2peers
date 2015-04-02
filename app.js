@@ -23,10 +23,9 @@ var app = express();
 // Configure passport
 var passport = passport();
 
-// http server
-var http = require('http').Server(app);
-
 // socket.io
-var io = require('./lib/sockets').listen(http);
+// var io = require('./lib/sockets').listen(server);
+
+app.listen(5000);
 
 module.exports = app;

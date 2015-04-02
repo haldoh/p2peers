@@ -83,7 +83,7 @@ module.exports.passwordValidity = function (req, res, next) {
 module.exports.signup = function (req, res, next) {
 	// Check if we need a redirect
 	if (req.p2pSignupRedir) {
-		res.redirect('/users/signup');
+		res.redirect('/signup');
 	} else {
 		// New account
 		User.register(new User({
@@ -91,10 +91,10 @@ module.exports.signup = function (req, res, next) {
 			email:		req.body.email,
 			name:			req.body.name,
 			surname:	req.body.surname
-		}), req.body.password, function (err, account) {
+		}), req.body.password, function (err, user) {
 			if (err) {
 				// Return to sign up page if there is an error
-				res.redirect('/users/signup');
+				res.redirect('/signup');
 			} else {
 				// If everything's ok, return to home page
 				res.redirect('/');

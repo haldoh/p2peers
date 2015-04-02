@@ -11,6 +11,20 @@
 
 var config = {
 
+	test: {
+		mode: 'test',
+		port: 5000,
+		securePort: 5001,
+		adminName: 'admin',
+		adminPwd: 'password',
+		mongo: {
+			host: 'localhost',
+			port: 27017,
+			name: 'p2peers-test',
+			sessionName: 'sessionp2peers-test'
+		}
+	},
+	
 	local: {
 		mode: 'local',
 		port: 5000,

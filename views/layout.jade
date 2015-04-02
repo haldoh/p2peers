@@ -47,9 +47,9 @@ html
 					ul.nav.navbar-nav.navbar-right
 						if (!user)
 							li
-								a(href='/users/signup') Sign up
+								a(href='/signup') Sign up
 							li
-								a(href='/users/login') Login
+								a(href='/login') Login
 						if (user)
 							li.dropdown
 								a.dropdown-toggle(href='#' data-toggle='dropdown' role='button' aria-expanded='false') #{user.name} #{user.surname} (#{user.username})
@@ -57,7 +57,7 @@ html
 									li
 										a(href='/users/#{user.username}') Profile
 									li
-										a(href='/users/logout') Logout
+										a(href='/logout') Logout
 
 		// Page content
 		block content

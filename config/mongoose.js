@@ -23,7 +23,6 @@ module.exports = function () {
 	// models
 	require('../models/Users');
 	require('../models/Chats');
-	require('../models/ChatMessages');
 
 	return db;
 };

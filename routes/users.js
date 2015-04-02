@@ -15,23 +15,6 @@ var Users = require('../controllers/users.js');
 var express = require('express');
 var router = express.Router();
 
-/* GET login page */
-router.get('/login', Users.isNotLoggedIn, Users.renderLogin);
-
-/* POST try to login */
-router.post('/login', Users.isNotLoggedIn, passport.authenticate('local', { successRedirect: '/',
-																										failureRedirect: '/login',
-																										failureFlash: 'Invalid credentials.' }), function (req, res) {});
-
-/* GET signup page */
-router.get('/signup', Users.isNotLoggedIn, Users.renderSignup);
-
-/* POST sign up */
-router.post('/signup', Users.isNotLoggedIn, Users.checkUser, Users.checkEmail, Users.passwordValidity, Users.signup);
-
-/* GET logout */
-router.get('/logout', Users.isLoggedIn, Users.logout);
-
 /* GET users listing. */
 router.get('/', Users.isLoggedIn, Users.renderUsersList);
 

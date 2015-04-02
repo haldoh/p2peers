@@ -8,17 +8,32 @@
 /*jslint node: true*/
 "use strict";
 
-var mongoose = require('mongoose'),
-	deepPopulate = require('mongoose-deep-populate');
+var mongoose = require('mongoose');
 
 var ChatSchema = new mongoose.Schema({
-	name: String,
+	name: { type: String, required: true },
 	updated: { type: Date, 'default': Date.now },
 	admins: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
 	users: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-	chatmessages: [{ type: mongoose.Schema.Types.ObjectId, ref: 'ChatMessage' }]
+	messages: [
+		{
+			body: { type: String, required: true },
+			time: { type: Date, 'default': Date.now, expires: 60 * 60 * 24 },
+			user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+		}
+	]
 });
 
-ChatSchema.plugin(deepPopulate);
+ChatSchema.methods.newMessage = function (msg, user, cb) {
+	// Push new message
+	var pos = this.messages.push({
+		body: msg,
+		user: user
+	});
+	// Set update time
+	this.updated = this.messages[pos - 1].time;
+	// Save changes
+	this.save(cb);
+};
 
 module.exports = mongoose.model('Chat', ChatSchema);

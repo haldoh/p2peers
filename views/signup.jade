@@ -5,7 +5,7 @@ block content
 	.container
 		h2.text-center #{title}
 		br
-		form.form-horizontal(role='form', action="/users/signup", method="post")
+		form.form-horizontal(role='form', action="/signup", method="post")
 			if (errors && errors.length)
 				each error in errors
 					.alert.alert-danger(role='alert')

@@ -12,13 +12,13 @@ var passport = require('passport');
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
 var Chat = mongoose.model('Chat');
-var ChatMessage = mongoose.model('ChatMessage');
-var routeFunct = require('./routeFunctions');
+var Users = require('../controllers/users');
+var Chats = require('../controllers/chats');
 var express = require('express');
 var router = express.Router();
 
 /* GET all chats of the user */
-router.get('/', routeFunct.isLoggedIn, function (req, res, next) {
+router.get('/', Users.isLoggedIn, function (req, res, next) {
 	req.user.populate('chats', function (err, user) {
 		if (err) { return next(err); }
 		res.json(user.chats);
@@ -26,32 +26,15 @@ router.get('/', routeFunct.isLoggedIn, function (req, res, next) {
 });
 
 /* GET new chat form */
-router.get('/newchat', routeFunct.isLoggedIn, function (req, res, next) {
+router.get('/newchat', Users.isLoggedIn, function (req, res, next) {
 	res.render('newchat', { title: 'Create new chat', user: req.user });
 });
 
 /* POST new chat */
-router.post('/newchat', routeFunct.isLoggedIn, function (req, res, next) {
-	// Build a new chat
-	var newChat = new Chat(req.body);
-	// Creator is an admin and the first user
-	newChat.admins.push(req.user);
-	newChat.users.push(req.user);
-	// Save new chat
-	newChat.save(function (err, chat) {
-		if (err) { return next(err); }
-		// Add chat to user
-		req.user.chats.push(newChat);
-		// Save user
-		req.user.save(function (err, user) {
-			if (err) { return next(err); }
-			res.json(newChat);
-		});
-	});
-});
+router.post('/newchat', Users.isLoggedIn, Chats.newChat);
 
 /* POST new message */
-router.post('/:chat/newmessage', routeFunct.isLoggedIn, function (req, res, next) {
+router.post('/:chat/newmessage', Users.isLoggedIn, function (req, res, next) {
 	// Build a new message
 	var newMsg = new ChatMessage(req.body);
 	// User is the owner of the message
@@ -77,7 +60,7 @@ router.post('/:chat/newmessage', routeFunct.isLoggedIn, function (req, res, next
 });
 
 /* GET a single chat's messages */
-router.get('/:chat/msgs', routeFunct.isLoggedIn, function (req, res, next) {
+router.get('/:chat/msgs', Users.isLoggedIn, function (req, res, next) {
 	req.chat.populate('chatmessages', function (err, chat) {
 		if (err) { return next(err); }
 		res.json(chat);
@@ -85,7 +68,7 @@ router.get('/:chat/msgs', routeFunct.isLoggedIn, function (req, res, next) {
 });
 
 /* GET a single chat's users */
-router.get('/:chat/users', routeFunct.isLoggedIn, function (req, res, next) {
+router.get('/:chat/users', Users.isLoggedIn, function (req, res, next) {
 	req.chat.populate('users', 'id username name surname', function (err, chat) {
 		if (err) { return next(err); }
 		res.json(chat);

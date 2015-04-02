@@ -9,20 +9,17 @@
 "use strict";
 
 var mongoose = require('mongoose'),
-	passportLocalMongoose = require('passport-local-mongoose'),
-	deepPopulate = require('mongoose-deep-populate');
+	passportLocalMongoose = require('passport-local-mongoose');
 
 var UserSchema = new mongoose.Schema({
-	username: { type: String, index: { unique: true } },
+	username: { type: String, required: true, index: { unique: true } },
 	email:		String,
 	password: String,
 	name:			String,
 	surname:	String,
-	chats:		[{ type: mongoose.Schema.Types.ObjectId, ref: 'Chat' }],
-	chatmessages:	[{ type: mongoose.Schema.Types.ObjectId, ref: 'ChatMessage' }]
+	chats:		[{ type: mongoose.Schema.Types.ObjectId, ref: 'Chat' }]
 });
 
 UserSchema.plugin(passportLocalMongoose);
-UserSchema.plugin(deepPopulate);
 
 module.exports = mongoose.model('User', UserSchema);

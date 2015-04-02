@@ -34,6 +34,9 @@ module.exports = function () {
 	// Create app
 	var app = express();
 	
+	// http server
+	var server = require('http').createServer(app);
+	
 	// view engine setup
 	app.set('views', './views');
 	app.set('view engine', 'jade');
@@ -63,8 +66,8 @@ module.exports = function () {
 
 		// Static files (CSS, JS, etc...)
 	app.use(serveStatic('./public', {index: false}));
-	// Main routes
-	app.use('/', require('../routes/index'));
+	// Static/generic routes
+	app.use('/', require('../routes/static'));
 	// Users routes
 	app.use('/users', require('../routes/users'));
 	// Chats routes
