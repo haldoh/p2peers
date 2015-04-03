@@ -20,17 +20,23 @@ var user, agent;
 describe('Users Controller Unit Tests:', function () {
 	
 	before(function (done) {
-		User.register(new User({
-			username:	'testuser',
-			email:		'testuser@test.com',
-			name:			'firstname',
-			surname:	'lastname'
-		}), 'password', function (err, newUser) {
-			if (err) { return done(err); }
-			user = newUser;
-			agent = request.agent(app);
-			done();
+		// Make sure User is empty
+		User.remove({}, function () {
+			
+			User.register(new User({
+				username:	'testuser',
+				email:		'testuser@test.com',
+				name:			'firstname',
+				surname:	'lastname'
+			}), 'password', function (err, newUser) {
+				if (err) { return done(err); }
+				user = newUser;
+				agent = request.agent(app);
+				done();
+			});
+			
 		});
+		
 	});
 	
 	describe('Test Login/Logout', function () {
@@ -58,9 +64,7 @@ describe('Users Controller Unit Tests:', function () {
 	});
 	
 	after(function (done) {
-		User.remove({}, function () {
-			done();
-		});
+		User.remove({}, done);
 	});
 	
 });

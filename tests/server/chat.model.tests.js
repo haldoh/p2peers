@@ -21,16 +21,22 @@ describe('Chat Model Unit Test:', function () {
 	
 	// Create new user once before all the tests
 	before(function (done) {
-		User.register(new User({
-			username:	'testuser',
-			email:		'testuser@test.com',
-			name:			'firstname',
-			surname:	'lastname'
-		}), 'password', function (err, newUser) {
-			if (err) { return done(err); }
-			user = newUser;
-			done();
+		// Make sure User is empty
+		User.remove({}, function () {
+								
+			User.register(new User({
+				username:	'testuser',
+				email:		'testuser@test.com',
+				name:			'firstname',
+				surname:	'lastname'
+			}), 'password', function (err, newUser) {
+				if (err) { return done(err); }
+				user = newUser;
+				done();
+			});
+			
 		});
+		
 	});
 	
 	// Refresh chat for each test

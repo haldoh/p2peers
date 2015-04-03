@@ -13,6 +13,8 @@ var config = {
 
 	test: {
 		mode: 'test',
+		logFile: true,
+		logConsole: false,
 		port: 5000,
 		securePort: 5001,
 		adminName: 'admin',
@@ -27,6 +29,8 @@ var config = {
 	
 	local: {
 		mode: 'local',
+		logFile: false,
+		logConsole: true,
 		port: 5000,
 		securePort: 5001,
 		adminName: 'admin',
@@ -41,6 +45,8 @@ var config = {
 	
 	heroku: {
 		mode: 'heroku',
+		logFile: true,
+		logConsole: true,
 		port: process.env.PORT,
 		securePort: process.env.PORT,
 		adminName: 'herokuadmin',
@@ -55,6 +61,8 @@ var config = {
 	
 	production: {
 		mode: 'production',
+		logFile: true,
+		logConsole: false,
 		port: 80,
 		securePort: 443,
 		adminName: 'admin',
