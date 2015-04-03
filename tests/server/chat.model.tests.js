@@ -43,8 +43,6 @@ describe('Chat Model Unit Test:', function () {
 	beforeEach(function (done) {
 		chat = new Chat({
 			name: "test chat",
-			admins: user,
-			users: user
 		});
 
 		chat.save(function (err, newChat) {
@@ -80,23 +78,59 @@ describe('Chat Model Unit Test:', function () {
 	
 	describe('Test new message', function () {
 	
-		it('Should save new message', function () {
+		it('Should save new message', function (done) {
 			chat.newMessage('Hi!', user, function (err) {
 				should.not.exist(err);
 				should.exist(chat.messages[0]);
+				done();
 			});
 		});
 		
-		it('Should set correct update time', function () {
+		it('Should set correct update time', function (done) {
 			chat.newMessage('Hi!', user, function (err) {
 				should.not.exist(err);
 				chat.updated.should.be.exactly(chat.messages[0].time);
+				done();
 			});
 		});
 		
-		it('Should not save empty message', function () {
+		it('Should not save empty message', function (done) {
 			chat.newMessage('', user, function (err) {
 				should.exist(err);
+				done();
+			});
+		});
+		
+	});
+	
+	describe('Test users methods', function () {
+		
+		it('Should add a new user', function (done) {
+			var usersNum = chat.users.length;
+			chat.addUser(user, function (err, newChat) {
+				should.not.exist(err);
+				newChat.users.length.should.be.exactly(usersNum + 1);
+				done();
+			});
+		});
+		
+		it('Should remove an existing user', function (done) {
+			chat.addUser(user, function (err, newChat) {
+				var usersNum = newChat.users.length;
+				chat.removeUser(user, function (err, newChat) {
+					should.not.exist(err);
+					newChat.users.length.should.be.exactly(usersNum - 1);
+					done();
+				});
+			});
+		});
+		
+		it('Should not remove a non-existing user', function (done) {
+			var usersNum = chat.users.length;
+			chat.removeUser(user, function (err, newChat) {
+				should.not.exist(err);
+				newChat.users.length.should.be.exactly(usersNum);
+				done();
 			});
 		});
 		

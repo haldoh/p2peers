@@ -15,36 +15,67 @@ var app = require('../../app.js'),
 	mongoose = require('mongoose'),
 	User = mongoose.model('User');
 
-var user, agent;
+var agent = request.agent(app);
 
 describe('Users Controller Unit Tests:', function () {
 	
-	before(function (done) {
-		// Make sure User is empty
-		User.remove({}, function () {
-			
-			User.register(new User({
-				username:	'testuser',
-				email:		'testuser@test.com',
-				name:			'firstname',
-				surname:	'lastname'
-			}), 'password', function (err, newUser) {
-				if (err) { return done(err); }
-				user = newUser;
-				agent = request.agent(app);
-				done();
-			});
-			
+	var signupUserData = {
+		username: 'testuser',
+		email: 'user@test.com',
+		emailConfirm: 'user@test.com',
+		password: 'password',
+		passConfirm: 'password',
+		name: 'user',
+		surname: 'of test'
+	};
+	
+	describe('Test Signup', function () {
+		
+		it('Should not signup a user with non-matching passwords', function (done) {
+			signupUserData.passConfirm = 'abcd1234';
+			request(app)
+				.post('/signup')
+				.send(signupUserData)
+				.expect('Location', '/signup', function () {
+					signupUserData.passConfirm = signupUserData.password;
+					done();
+				});
+		});
+		
+		it('Should not signup a user with non-matching emails', function (done) {
+			signupUserData.emailConfirm = 'wrong@email.com';
+			request(app)
+				.post('/signup')
+				.send(signupUserData)
+				.expect('Location', '/signup', function () {
+					signupUserData.emailConfirm = signupUserData.email;
+					done();
+				});
+		});
+		
+		it('Should signup a new user', function (done) {
+			request(app)
+				.post('/signup')
+				.send(signupUserData)
+				.expect('Location', '/', done);
+		});
+		
+		it('Should not signup the same user again', function (done) {
+			request(app)
+				.post('/signup')
+				.send(signupUserData)
+				.expect('Location', '/signup', done);
 		});
 		
 	});
 	
+	
 	describe('Test Login/Logout', function () {
 		
-		it('Should login and redirect to /', function (done) {
+		it('Should login with new user and redirect to /', function (done) {
 			agent
 				.post('/login')
-				.send({ username: 'testuser', password: 'password' })
+				.send({ username: signupUserData.username, password: signupUserData.password })
 				.expect('Location', '/', done);
 		});
 		
@@ -54,10 +85,10 @@ describe('Users Controller Unit Tests:', function () {
 				.expect('Location', '/', done);
 		});
 		
-		it('Should not login and redirect to /login', function (done) {
+		it('Should not login a non-existing user and redirect to /login', function (done) {
 			agent
 				.post('/login')
-				.send({ user: 'pippo', password: user.password })
+				.send({ user: 'pippo', password: 'abcd' })
 				.expect('Location', '/login', done);
 		});
 		

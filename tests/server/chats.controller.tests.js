@@ -20,6 +20,8 @@ var user, agent, chat;
 
 describe('Chats Controller Unit Tests:', function () {
 	
+	var chatName = 'testChat';
+	
 	before(function (done) {
 		// Make sure User is empty
 		User.remove({}, function () {
@@ -46,9 +48,8 @@ describe('Chats Controller Unit Tests:', function () {
 	describe('Test chat functions', function () {
 		
 		it('Should return a new chat', function (done) {
-			var chatName = 'testChat';
 			agent
-				.post('/chats/newchat')
+				.post('/chats')
 				.send({ name: chatName })
 				.expect('Content-Type', /json/)
 				.end(function (err, res) {
@@ -60,15 +61,31 @@ describe('Chats Controller Unit Tests:', function () {
 				
 		});
 		
-	});
-	
-	// Refresh chat for each test
-	afterEach(function (done) {
-		Chat.remove({}, done);
+		it('Should return a chat with a new message', function (done) {
+			Chat.findOne({ name: chatName }, function (err, chat) {
+				var msgsNum = chat.messages.length;
+				var msg = 'a new message';
+				agent
+					.post('/chats/' + chat.id)
+					.send({ body: msg })
+					.expect('Content-Type', /json/)
+					.end(function (err, res) {
+						var newMsgsNum = res.body.messages.length;
+						var newMsg = res.body.messages[newMsgsNum - 1].body;
+						newMsgsNum.should.be.exactly(msgsNum + 1);
+						newMsg.should.be.exactly(msg);
+						done();
+					});
+			});
+			
+		});
+		
 	});
 	
 	after(function (done) {
-		User.remove({}, done);
+		Chat.remove({}, function () {
+			User.remove({}, done);
+		});
 	});
 	
 });

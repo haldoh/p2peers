@@ -43,13 +43,12 @@ module.exports.checkUser = function (req, res, next) {
 
 // Check email validity
 module.exports.checkEmail = function (req, res, next) {
-	console.log(req.p2pSignupRedir);
 	if (req.body.email === '') {
 		// Email can't be empty
 		req.flash('error', "Email can not be empty.");
 		req.p2pSignupRedir = true;
-	} else if (req.body.password !== req.body.passConfirm) {
-		// Passwords do not match
+	} else if (req.body.email !== req.body.emailConfirm) {
+		// Emails do not match
 		req.flash('error', "Email addresses do not match.");
 		req.p2pSignupRedir = true;
 	} else {

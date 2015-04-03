@@ -73,7 +73,7 @@ module.exports = function () {
 	app.use(passport.session());
 	app.use(flash());
 
-		// Static files (CSS, JS, etc...)
+	// Static files (CSS, JS, etc...)
 	app.use(serveStatic('./public', {index: false}));
 	// Static/generic routes
 	app.use('/', require('../routes/static'));

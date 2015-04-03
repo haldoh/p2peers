@@ -17,74 +17,42 @@ var Chats = require('../controllers/chats');
 var express = require('express');
 var router = express.Router();
 
-/* GET all chats of the user */
-router.get('/', Users.isLoggedIn, function (req, res, next) {
-	req.user.populate('chats', function (err, user) {
-		if (err) { return next(err); }
-		res.json(user.chats);
-	});
-});
+router.use(Users.isLoggedIn);
 
-/* GET new chat form */
-router.get('/newchat', Users.isLoggedIn, function (req, res, next) {
-	res.render('newchat', { title: 'Create new chat', user: req.user });
-});
+router.route('/')
+	// GET chats list
+	.get(Chats.getChats)
+	// POST new chat
+	.post(Chats.newChat);
 
-/* POST new chat */
-router.post('/newchat', Users.isLoggedIn, Chats.newChat);
+router.route('/:chat')
+	// GET this chat
+	.get(Chats.getChat)
+	// POST new chat message
+	.post(Chats.newMessage)
+	// DELETE delete this chat
+	.delete(Chats.deleteChat);
 
-/* POST new message */
-router.post('/:chat/newmessage', Users.isLoggedIn, function (req, res, next) {
-	// Build a new message
-	var newMsg = new ChatMessage(req.body);
-	// User is the owner of the message
-	newMsg.user = req.user;
-	// The chat in the url is the message's chat
-	newMsg.chat = req.chat;
-	// Save the message
-	newMsg.save(function (err, msg) {
-		if (err) { return next(err); }
-		// Save reference in user
-		req.user.chatmessages.push(newMsg);
-		req.user.save(function (err, user) {
-			if (err) { return next(err); }
-			// Save reference in chat
-			req.chat.chatmessages.push(newMsg);
-			req.chat.updated = newMsg.time;
-			req.chat.save(function (err, chat) {
-				if (err) { return next(err); }
-				res.json(newMsg);
-			});
-		});
-	});
-});
+router.route('/:chat/public')
+	// PUT make this chat public
+	.put(Chats.publicChat)
+	// DELETE make this chat private
+	.delete(Chats.privateChat);
 
-/* GET a single chat's messages */
-router.get('/:chat/msgs', Users.isLoggedIn, function (req, res, next) {
-	req.chat.populate('chatmessages', function (err, chat) {
-		if (err) { return next(err); }
-		res.json(chat);
-	});
-});
+router.route('/:chat/:user')
+	// PUT add user to the chat
+	.put(Chats.addUser)
+	// DELETE remove user from the chat
+	.delete(Chats.removeUser);
 
-/* GET a single chat's users */
-router.get('/:chat/users', Users.isLoggedIn, function (req, res, next) {
-	req.chat.populate('users', 'id username name surname', function (err, chat) {
-		if (err) { return next(err); }
-		res.json(chat);
-	});
-});
+router.route('/:chat/:user/admin')
+	// PUT make user admin
+	.put(Chats.addAdmin);
 
 /* PARAM chat id */
-router.param('chat', function (req, res, next, id) {
-	// Find chat by id
-	Chat.findById(id, function (err, chat) {
-		// If there are no errors, save it in req.chat and continue
-		if (err) { return next(err); }
-		if (!chat) { return next(new Error('can\'t find chat')); }
-		req.chat = chat;
-		return next();
-	});
-});
+router.param('chat', Chats.findChatById);
+
+/* PARAM user id */
+router.param('user', Chats.findUserById);
 
 module.exports = router;

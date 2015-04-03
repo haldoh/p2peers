@@ -42,6 +42,13 @@ describe('User Model Unit Test:', function () {
 				should.exist(err);
 			});
 		});
+		
+		it('Should not register without email', function () {
+			user.email = '';
+			User.register(user, userPwd, function (err, newUser) {
+				should.exist(err);
+			});
+		});
 	
 	});
 	
