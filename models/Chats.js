@@ -41,14 +41,18 @@ ChatSchema.methods.addUser = function (user, cb) {
 	// Use addToSet to insert the new user only if it is not already in the array
 	this.users.addToSet(user);
 	// Save changes
-	this.save(cb);
+	this.save(function (err, chat) {
+		cb(user, err, chat);
+	});
 };
 
 ChatSchema.methods.removeUser = function (user, cb) {
 	// Use pull to remove user from the array
 	this.users.pull(user);
 	// Save changes
-	this.save(cb);
+	this.save(function (err, chat) {
+		cb(user, err, chat);
+	});
 };
 
 ChatSchema.methods.addAdmin = function (user, cb) {
@@ -57,7 +61,9 @@ ChatSchema.methods.addAdmin = function (user, cb) {
 		// Use addToSet to insert the new admin only if it is not already in the array
 		this.admins.addToSet(user);
 		// Save changes
-		this.save(cb);
+		this.save(function (err, chat) {
+			cb(user, err, chat);
+		});
 	}
 };
 

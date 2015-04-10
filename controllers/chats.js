@@ -11,6 +11,13 @@
 var Chat = require('mongoose').model('Chat'),
 	User = require('mongoose').model('User');
 
+// Remove hash and salt from users before sending them around
+var safeUser = function (user) {
+	user.hash = '';
+	user.salt = '';
+	return user;
+};
+
 // Get a list of chats for the logged user
 module.exports.getChats = function (req, res, next) {
 	req.user
@@ -19,7 +26,7 @@ module.exports.getChats = function (req, res, next) {
 			if (err) { return next(err); }
 			// This user contains all the data for all his chats
 			// excluding messages (for bandwith's sake)
-			res.json(user);
+			res.json(safeUser(user));
 		});
 };
 
@@ -89,46 +96,46 @@ module.exports.privateChat = function (req, res, next) {
 
 // Add a user to the chat
 module.exports.addUser = function (req, res, next) {
-	req.chat.addUser(req.paramUser, function (err, newChat) {
+	req.chat.addUser(req.paramUser, function (user, err, newChat) {
 		if (err) { return next(err); }
-		res.sendStatus(200);
+		res.json(safeUser(user));
 	});
 };
 
 // Remove a user from the chat
 module.exports.removeUser = function (req, res, next) {
-	req.chat.removeUser(req.paramUser, function (err, newChat) {
+	req.chat.removeUser(req.paramUser, function (user, err, newChat) {
 		if (err) { return next(err); }
-		res.sendStatus(200);
+		res.json(safeUser(user));
 	});
 };
 
 // Add a user to the admins list
 module.exports.addAdmin = function (req, res, next) {
-	req.chat.addAdmin(req.paramUser, function (err, newChat) {
+	req.chat.addAdmin(req.paramUser, function (user, err, newChat) {
 		if (err) { return next(err); }
-		res.sendStatus(200);
+		res.json(safeUser(user));
 	});
 };
 
 // Find a chat by id - param
 module.exports.findChatById = function (req, res, next, id) {
 	Chat.findById(id, function (err, chat) {
-	// If there are no errors, save it in req.chat and continue
-	if (err) { return next(err); }
-	if (!chat) { return next(new Error('can\'t find chat')); }
-	req.chat = chat;
-	return next();
-});
+		// If there are no errors, save it in req.chat and continue
+		if (err) { return next(err); }
+		if (!chat) { return next(new Error('can\'t find chat')); }
+		req.chat = chat;
+		return next();
+	});
 };
 
 // Find a user by id - param
 module.exports.findUserById = function (req, res, next, id) {
 	User.findById(id, function (err, user) {
-	// If there are no errors, save it in req.paramUser and continue
-	if (err) { return next(err); }
-	if (!user) { return next(new Error('can\'t find user')); }
-	req.paramUser = user;
-	return next();
-});
+		// If there are no errors, save it in req.paramUser and continue
+		if (err) { return next(err); }
+		if (!user) { return next(new Error('can\'t find user')); }
+		req.paramUser = user;
+		return next();
+	});
 };

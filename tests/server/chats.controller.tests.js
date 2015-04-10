@@ -16,7 +16,7 @@ var app = require('../../app.js'),
 	User = mongoose.model('User'),
 	Chat = mongoose.model('Chat');
 
-var user, agent, chat;
+var user, user2, agent, chat;
 
 describe('Chats Controller Unit Tests:', function () {
 	
@@ -34,18 +34,27 @@ describe('Chats Controller Unit Tests:', function () {
 			}), 'password', function (err, newUser) {
 				if (err) { return done(err); }
 				user = newUser;
-				agent = request.agent(app);
-				agent
-					.post('/login')
-					.send({ username: 'testuser', password: 'password' })
-					.end(done);
+				User.register(new User({
+					username:	'testuser2',
+					email:		'testuser2@test.com',
+					name:			'firstname',
+					surname:	'lastname'
+				}), 'password', function (err, newUser) {
+					if (err) { return done(err); }
+					user2 = newUser;
+					agent = request.agent(app);
+					agent
+						.post('/login')
+						.send({ username: 'testuser', password: 'password' })
+						.end(done);
+				});
 			});
 			
 		});
 		
 	});
 	
-	describe('Test chat functions', function () {
+	describe('Test basic chat functions', function () {
 		
 		it('Should return a new chat', function (done) {
 			agent
@@ -78,6 +87,33 @@ describe('Chats Controller Unit Tests:', function () {
 					});
 			});
 			
+		});
+		
+	});
+	
+	describe('Test users-related chat functions', function () {
+		
+		it('Should add a user', function (done) {
+			Chat.findOne({ name: chatName }, function (err, chat) {
+				agent
+					.put('/chats/' + chat.id + '/' + user2.id)
+					.expect('Content-Type', /json/)
+					.end(function (err, res) {
+						res.body.username.should.be.exactly(user2.username);
+						done();
+					});
+			});
+		});
+		
+		it('Should remove a user', function (done) {
+			Chat.findOne({ name: chatName }, function (err, chat) {
+				agent
+					.delete('/chats/' + chat.id + '/' + user2.id)
+					.end(function (err, res) {
+						res.body.username.should.be.exactly(user2.username);
+						done();
+					});
+			});
 		});
 		
 	});

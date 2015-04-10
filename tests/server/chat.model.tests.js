@@ -107,7 +107,7 @@ describe('Chat Model Unit Test:', function () {
 		
 		it('Should add a new user', function (done) {
 			var usersNum = chat.users.length;
-			chat.addUser(user, function (err, newChat) {
+			chat.addUser(user, function (newUser, err, newChat) {
 				should.not.exist(err);
 				newChat.users.length.should.be.exactly(usersNum + 1);
 				done();
@@ -115,9 +115,9 @@ describe('Chat Model Unit Test:', function () {
 		});
 		
 		it('Should remove an existing user', function (done) {
-			chat.addUser(user, function (err, newChat) {
+			chat.addUser(user, function (newUser, err, newChat) {
 				var usersNum = newChat.users.length;
-				chat.removeUser(user, function (err, newChat) {
+				chat.removeUser(user, function (newUser, err, newChat) {
 					should.not.exist(err);
 					newChat.users.length.should.be.exactly(usersNum - 1);
 					done();
@@ -127,7 +127,7 @@ describe('Chat Model Unit Test:', function () {
 		
 		it('Should not remove a non-existing user', function (done) {
 			var usersNum = chat.users.length;
-			chat.removeUser(user, function (err, newChat) {
+			chat.removeUser(user, function (newUser, err, newChat) {
 				should.not.exist(err);
 				newChat.users.length.should.be.exactly(usersNum);
 				done();
